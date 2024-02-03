@@ -6,6 +6,7 @@ import {
   useState,
   Children,
   useEffect,
+  useCallback,
 } from "react";
 import { NextArrow, PrevArrow } from "./Arrow";
 
@@ -13,19 +14,19 @@ const Carousel: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const childrenArray = Children.toArray(children);
 
-  const handleNextActiveIndex = () => {
+  const handleNextActiveIndex = useCallback(() => {
     setActiveIndex((prev) => {
       if (prev >= childrenArray.length - 1) return 0;
       return prev + 1;
     });
-  };
+  }, [childrenArray.length]);
 
-  const handlePrevActiveIndex = () => {
+  const handlePrevActiveIndex = useCallback(() => {
     setActiveIndex((prev) => {
       if (prev < 1) return childrenArray.length - 1;
       return prev - 1;
     });
-  };
+  }, [childrenArray.length]);
 
   useEffect(() => {
     const intervalId = setInterval(handleNextActiveIndex, 5000);

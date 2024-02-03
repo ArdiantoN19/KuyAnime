@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FunctionComponent } from "react";
 import Search from "../Search";
+import Auth from "./Auth";
 
 const Navbar: FunctionComponent = () => {
   return (
@@ -12,6 +13,7 @@ const Navbar: FunctionComponent = () => {
           </h1>
         </Link>
         <Search />
+        <Auth />
       </nav>
     </header>
   );

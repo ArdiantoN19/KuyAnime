@@ -85,6 +85,8 @@ const Footer: FunctionComponent = () => {
                   href={social.link}
                   className="bg-white text-teal-400 p-2 rounded shadow-sm"
                   title={social.title}
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   {social.icon}
                 </Link>

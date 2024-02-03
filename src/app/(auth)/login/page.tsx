@@ -8,7 +8,6 @@ import { FunctionComponent } from "react";
 const Page: FunctionComponent = () => {
   const router = useRouter();
   const params = useSearchParams();
-
   const handleBack = () => {
     router.back();
   };

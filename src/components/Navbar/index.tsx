@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FunctionComponent } from "react";
+import { FunctionComponent, Suspense } from "react";
 import Search from "../Search";
 import Auth from "./Auth";
 
@@ -13,7 +13,9 @@ const Navbar: FunctionComponent = () => {
           </h1>
         </Link>
         <Search />
-        <Auth />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Auth />
+        </Suspense>
       </nav>
     </header>
   );

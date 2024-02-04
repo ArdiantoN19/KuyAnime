@@ -22,7 +22,7 @@ const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
             />
           </div>
           <div className="w-full md:w-2/3 lg:w-4/5">
-            <div className="flex items-center gap-x-1 mb-2">
+            <div className="flex items-center gap-x-1 mb-2 flex-wrap">
               <Link
                 href={"/"}
                 className="flex items-center text-sm gap-x-1 hover:text-teal-400"
@@ -42,7 +42,7 @@ const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
                 {detailAnime.type}
               </div>
               <div className="border text-sm px-1.5 border-teal-400 rounded">
-                Eps: {detailAnime.episodes}
+                Eps: {detailAnime.episodes || "N/A"}
               </div>
               <div className="border text-sm px-1.5 border-teal-400 rounded">
                 {detailAnime.duration}
@@ -51,7 +51,9 @@ const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
                 ⭐ {detailAnime.score || "N/A"}
               </div>
               <div className="flex items-center px-1 rounded bg-teal-400 text-white text-sm gap-x-1">
-                {`${detailAnime.season} ${detailAnime.year}`}
+                {`${detailAnime.season || "N/A"} - ${
+                  detailAnime.year || "N/A"
+                }`}
               </div>
             </div>
             <div className="text-sm text-justify">{detailAnime.synopsis}</div>
@@ -69,8 +71,7 @@ const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
             </li>
             <li className="text-sm">
               <span className="font-semibold">Mal Score:</span>{" "}
-              {detailAnime.score} by {detailAnime.scored_by}
-              votes
+              {detailAnime.score} by {detailAnime.scored_by} votes
             </li>
             <li className="text-sm">
               <span className="font-semibold">Rating:</span>{" "}

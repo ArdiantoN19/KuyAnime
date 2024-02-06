@@ -1,5 +1,6 @@
 import { authServerSession } from "@/lib/api/auth";
 import Image from "next/image";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 
 type SessionType = {
@@ -30,8 +31,12 @@ const Page: FunctionComponent = async () => {
         </div>
       </div>
       <div className="flex items-center gap-x-2 ">
-        <button className="button">My Collection</button>
-        <button className="button">My Comment</button>
+        <Link href={"/user/mycollection"} className="button">
+          My Collection
+        </Link>
+        <Link href={"/user/mycomment"} className="button">
+          My Comment
+        </Link>
       </div>
     </div>
   );

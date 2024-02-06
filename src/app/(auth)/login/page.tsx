@@ -1,11 +1,13 @@
 "use client";
+
 import { ArrowLeft, GithubLogo } from "@phosphor-icons/react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 const Page: FunctionComponent = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const params = useSearchParams();
   const handleBack = () => {
@@ -13,10 +15,12 @@ const Page: FunctionComponent = () => {
   };
 
   const handleSignIn = async () => {
+    setIsLoading(true);
     await signIn("github", {
       redirect: false,
       callbackUrl: params.get("callbackUrl") as string,
     });
+    setIsLoading(false);
   };
 
   return (
@@ -48,7 +52,11 @@ const Page: FunctionComponent = () => {
             size={28}
             className="bg-white text-black rounded-full p-1"
           />
-          Continue with GitHub
+          {isLoading ? (
+            <span className="animate-pulse">Loading...</span>
+          ) : (
+            <span>Continue with GitHub</span>
+          )}
         </button>
       </div>
     </div>

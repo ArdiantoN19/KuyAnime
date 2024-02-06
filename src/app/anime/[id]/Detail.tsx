@@ -1,3 +1,4 @@
+import AddCollection from "@/components/Collection/AddCollection";
 import { DetailAnimeType } from "@/types/anime";
 import { formattedDate } from "@/utils";
 import { HouseLine, Info } from "@phosphor-icons/react/dist/ssr";
@@ -5,9 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { FunctionComponent } from "react";
 
-const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
-  detailAnime,
-}) => {
+const DetailAnime: FunctionComponent<{
+  detailAnime: DetailAnimeType;
+}> = ({ detailAnime }) => {
   return (
     <section className="container mt-8 mb-10">
       <div className="flex flex-col lg:flex-row items-start justify-center gap-y-5 md:gap-x-5">
@@ -38,6 +39,11 @@ const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
             </div>
             <h1 className="text-4xl font-bold mb-4">{detailAnime.title}</h1>
             <div className="flex items-center flex-wrap md:flex-nowrap gap-2 mb-3">
+              <AddCollection
+                mal_id={detailAnime.mal_id}
+                anime_image={detailAnime.images.webp.large_image_url}
+                anime_title={detailAnime.title}
+              />
               <div className="border text-sm px-1.5 border-teal-400 rounded">
                 {detailAnime.type}
               </div>
@@ -88,7 +94,7 @@ const DetailAnime: FunctionComponent<{ detailAnime: DetailAnimeType }> = ({
               <span className="font-semibold">Studio:</span>{" "}
               {detailAnime.studios.map(({ name }) => name).join(",")}
             </li>
-            <hr className="border border-black/20 my-2" />
+            <hr className="border border-black/10 my-2" />
             <li className="text-sm flex items-center gap-1 flex-wrap">
               <span className="font-semibold">Genres:</span>
               {detailAnime.genres.map(({ mal_id, name }, index) => (

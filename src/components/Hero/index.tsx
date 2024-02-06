@@ -22,6 +22,7 @@ const Hero: FunctionComponent<AnimeDataType & { topNumber: number }> = ({
         width={500}
         height={500}
         className="w-full h-full object-cover"
+        priority
       />
       <div className="absolute bottom-0 left-0 bg-gradient-to-t from-black w-full h-[20em] md:h-[22em] p-3 md:p-5">
         <p className="text-lg md:text-xl text-teal-400 mb-5">

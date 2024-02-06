@@ -6,7 +6,6 @@ import { FunctionComponent } from "react";
 
 const Auth: FunctionComponent = () => {
   const { data: session } = useSession();
-
   return (
     <div>
       {session?.accessToken ? (

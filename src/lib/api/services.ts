@@ -59,7 +59,7 @@ export const getTopAnime = async ({
   page?: number;
 }): Promise<AnimeDatasType> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/top/anime?limit=${limit}&page=${page}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/top/anime?limit=${limit}&page=${page}&sfw=true`,
     {
       cache: "force-cache",
     }
@@ -70,7 +70,7 @@ export const getTopAnime = async ({
 
 export const searchAnime = async (query: string): Promise<AnimeDatasType> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${query}`
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${query}&sfw=true`
   );
   const datas = await response.json();
   return { pagination: datas.pagination, data: convertDataAnime(datas.data) };
@@ -90,7 +90,7 @@ export const getDetailAnime = async (
 
 export const getRecommendationAnime = async () => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/recommendations/anime`
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/recommendations/anime?sfw=true`
   );
   const datas = await response.json();
   const result = datas.data.flatMap((item: any) => item.entry);
@@ -109,4 +109,57 @@ export const randomAnime = (datas: any, gap: number) => {
   const first = ~~(Math.random() * (datas.length - gap) + 1);
   const last = gap + first;
   return datas.slice(first, last);
+};
+
+export const addCollection = async ({
+  data,
+}: {
+  data: { mal_id: number; anime_image: string; anime_title: string };
+}) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/collection`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  const responseJson = await response.json();
+  if (!response.ok) throw new Error("Something wrong when add collection");
+  return responseJson.data;
+};
+
+export const getCollectionByMalId = async (mal_id: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/collection/${mal_id}`
+  );
+  const responseJson = await response.json();
+  return responseJson.data;
+};
+
+export const deleteCollectionByMalId = async (mal_id: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/collection/${mal_id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  const responseJson = await response.json();
+  if (!response.ok) throw new Error("Something wrong when delete collection");
+  return responseJson.data;
+};
+
+export const getCollections = async () => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/collection`,
+    {
+      next: {
+        revalidate: 3,
+      },
+    }
+  );
+  const responseJson = await response.json();
+  return responseJson.data;
 };

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { FunctionComponent, Suspense } from "react";
+import { FunctionComponent } from "react";
 import Search from "../Search";
-import Auth from "./Auth";
+import ProfileMenu from "./ProfileMenu";
 
 const Navbar: FunctionComponent = () => {
   return (
@@ -12,11 +12,10 @@ const Navbar: FunctionComponent = () => {
             <span className="text-yellow-400">Kuy</span>Anime
           </h1>
         </Link>
-        <div className="flex items-center gap-x-2">
+
+        <div className="flex items-center gap-x-2 md:gap-x-4">
           <Search />
-          <Suspense fallback={<div>Loading...</div>}>
-            <Auth />
-          </Suspense>
+          <ProfileMenu />
         </div>
       </nav>
     </header>

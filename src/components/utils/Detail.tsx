@@ -20,6 +20,7 @@ const DetailAnime: FunctionComponent<{
               width={300}
               height={500}
               className="w-full h-full object-cover"
+              priority
             />
           </div>
           <div className="w-full md:w-2/3 lg:w-4/5">

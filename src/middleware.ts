@@ -27,4 +27,8 @@ const mainMiddleware = (req: NextRequest) => {
   return NextResponse.next();
 };
 
-export default withAuth(mainMiddleware, ["/user/dashboard", "/api"]);
+export default withAuth(mainMiddleware, [
+  "/user/dashboard",
+  "/user/mycollection",
+  "/api",
+]);

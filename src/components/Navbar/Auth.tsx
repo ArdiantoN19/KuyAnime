@@ -1,37 +1,28 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SignOut, User } from "@phosphor-icons/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { FunctionComponent } from "react";
 
 const Auth: FunctionComponent = () => {
-  const { data: session } = useSession();
   return (
-    <div>
-      {session?.accessToken ? (
-        <div className="flex gap-x-3 items-center">
-          <Link
-            href={"/user/dashboard"}
-            className="px-2 py-1.5 rounded border text-white border-white"
-          >
-            Dashboard
-          </Link>
-          <button
-            className="px-2 py-1.5 rounded border text-white border-white"
-            onClick={() => signOut()}
-          >
-            signOut
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={() => signIn()}
-          className="px-3 py-2 rounded bg-white text-teal-400 drop-shadow-sm transition-all active:scale-95"
-        >
-          signIn
-        </button>
-      )}
-    </div>
+    <ul className="flex flex-col">
+      <Link
+        className="text-sm py-1.5 px-3 flex items-center hover:bg-slate-100 gap-x-2"
+        href={"/user/dashboard"}
+      >
+        <User size={16} /> Dashboard
+      </Link>
+      <hr />
+      <button
+        type="button"
+        className="text-sm py-1.5 px-3 hover:bg-slate-100 flex items-center gap-x-2"
+        onClick={() => signOut()}
+      >
+        <SignOut size={16} /> Logout
+      </button>
+    </ul>
   );
 };
 

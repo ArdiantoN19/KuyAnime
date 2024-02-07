@@ -163,3 +163,63 @@ export const getCollections = async () => {
   const responseJson = await response.json();
   return responseJson.data;
 };
+
+export const addComment = async ({
+  anime_mal_id,
+  comment,
+}: {
+  anime_mal_id: number;
+  comment: string;
+}) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ anime_mal_id, comment }),
+    }
+  );
+  const responseJson = await response.json();
+  if (!response.ok) throw new Error("Something wrong when add comment");
+  return responseJson.data;
+};
+
+export const getCommentsByAnimeMalId = async (anime_mal_id: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment/${anime_mal_id}`,
+    {
+      cache: "no-store",
+    }
+  );
+  const responseJson = await response.json();
+  return responseJson.data;
+};
+
+export const getComments = async () => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment`,
+    {
+      next: {
+        revalidate: 3,
+      },
+    }
+  );
+  const responseJson = await response.json();
+  return responseJson.data;
+};
+
+export const deleteCommentByCommentId = async (commentId: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment/${commentId}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Something wrong when delete comment");
+  }
+  const responseJson = await response.json();
+  return responseJson.data;
+};

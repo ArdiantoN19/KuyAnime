@@ -13,7 +13,7 @@ import {
   getCollectionByMalId,
 } from "@/lib/api/services";
 import { useSession } from "next-auth/react";
-import { Flip, ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface AddCollectionProps {
   mal_id: number;
@@ -95,19 +95,6 @@ const AddCollection: FunctionComponent<AddCollectionProps> = ({
             <Circle size={24} className="text-red-500 animate-pulse" />
           )}
         </button>
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Flip}
-        />
       </div>
     )
   );

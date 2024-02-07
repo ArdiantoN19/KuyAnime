@@ -3,6 +3,7 @@ import {
   payloadCollectionType,
   ResponseCollectionType,
 } from "@/types/collection";
+import { PayloadCommentType, ResponseCommentType } from "@/types/comment";
 import { RegisterUserType, ResponseRegisterUserType } from "@/types/user";
 
 const responseService = <T>(statusCode: number, data: T, message?: string) => {
@@ -89,7 +90,7 @@ export const deleteCollection = async (data: payloadCollectionType) => {
       response as ResponseCollectionType
     );
   } catch (error: any) {
-    return responseService(400, {}, error.message);
+    return responseService(404, {}, error.message);
   }
 };
 
@@ -110,11 +111,95 @@ export const getCollectionByEmailandMalId = async (
   }
 };
 
-export const getCollections = async () => {
+export const getCollections = async (owner_id: number) => {
   try {
-    const collections = await prisma.collection.findMany();
+    const collections = await prisma.collection.findMany({
+      where: {
+        owner_id,
+      },
+    });
     return responseService(200, collections as ResponseCollectionType[]);
   } catch (error: any) {
-    return responseService(400, {}, error.message);
+    return responseService(500, {}, error.message);
+  }
+};
+
+export const addComment = async (data: PayloadCommentType) => {
+  try {
+    const comment = await prisma.comment.create({ data });
+    return responseService<ResponseCommentType>(
+      201,
+      comment as ResponseCommentType
+    );
+  } catch (error: any) {
+    return responseService(400, {}, error);
+  }
+};
+
+export const getCommentsByAnimeMalId = async (anime_mal_id: number) => {
+  try {
+    const comments = await prisma.comment.findMany({
+      where: {
+        anime_mal_id,
+      },
+      include: {
+        owner: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+    if (!comments.length) {
+      throw new Error("Cannot find comments, check anime mal id");
+    }
+    return responseService<ResponseCommentType[]>(
+      200,
+      comments as ResponseCommentType[]
+    );
+  } catch (error: any) {
+    return responseService(404, {}, error.message);
+  }
+};
+
+export const getComments = async (owner_id: number) => {
+  try {
+    const comments = await prisma.comment.findMany({
+      where: {
+        owner_id,
+      },
+      include: {
+        owner: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+
+    return responseService<ResponseCommentType[]>(
+      200,
+      comments as ResponseCommentType[]
+    );
+  } catch (error: any) {
+    return responseService(500, {}, error.message);
+  }
+};
+
+export const deleteCommentByCommentId = async (commentId: number) => {
+  try {
+    const comment = await prisma.comment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    return responseService<ResponseCommentType>(
+      200,
+      comment as ResponseCommentType
+    );
+  } catch (error: any) {
+    return responseService(404, {}, error);
   }
 };

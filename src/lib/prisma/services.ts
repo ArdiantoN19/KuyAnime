@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import {
+  DetailCollectionType,
   payloadCollectionType,
   ResponseCollectionType,
 } from "@/types/collection";
@@ -75,7 +76,7 @@ export const postCollection = async (data: payloadCollectionType) => {
   }
 };
 
-export const deleteCollection = async (data: payloadCollectionType) => {
+export const deleteCollection = async (data: DetailCollectionType) => {
   try {
     const response = await prisma.collection.delete({
       where: {
@@ -95,7 +96,7 @@ export const deleteCollection = async (data: payloadCollectionType) => {
 };
 
 export const getCollectionByEmailandMalId = async (
-  data: payloadCollectionType
+  data: DetailCollectionType
 ) => {
   try {
     const collection = await checkAvailableCollection(

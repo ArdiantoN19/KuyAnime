@@ -3,7 +3,10 @@ import {
   getCollectionByEmailandMalId,
   deleteCollection,
 } from "@/lib/prisma/services";
-import { payloadCollectionType } from "@/types/collection";
+import {
+  DetailCollectionType,
+  payloadCollectionType,
+} from "@/types/collection";
 
 export async function GET(
   request: Request,
@@ -16,7 +19,7 @@ export async function GET(
       { status: 401 }
     );
   }
-  const payload: payloadCollectionType = {
+  const payload: DetailCollectionType = {
     anime_mal_id: Number(params.id),
     owner_id: session?.user.userId,
   };
@@ -40,7 +43,7 @@ export async function DELETE(
   }
 
   const mal_id = Number(params.id);
-  const payload: payloadCollectionType = {
+  const payload: DetailCollectionType = {
     anime_mal_id: mal_id,
     owner_id: session?.user.userId,
   };

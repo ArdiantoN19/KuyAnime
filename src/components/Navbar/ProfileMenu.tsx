@@ -23,7 +23,6 @@ const ProfileMenu: FunctionComponent = () => {
   }
   return (
     <Dropdown
-      target="profile"
       label={
         <div className="w-10 h-10 rounded-full overflow-hidden border">
           <Image

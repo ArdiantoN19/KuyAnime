@@ -30,5 +30,6 @@ const mainMiddleware = (req: NextRequest) => {
 export default withAuth(mainMiddleware, [
   "/user/dashboard",
   "/user/mycollection",
+  "/user/mycomment",
   "/api",
 ]);

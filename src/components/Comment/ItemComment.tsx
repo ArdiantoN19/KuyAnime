@@ -1,23 +1,96 @@
-import { ResponseCommentType } from "@/types/comment";
+"use client";
+
+import { ResponseCommentApiType } from "@/types/comment";
 import Image from "next/image";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { postedAt } from "@/utils";
-import { ThumbsDown, ThumbsUp } from "@phosphor-icons/react/dist/ssr";
+import { ThumbsDown } from "@phosphor-icons/react/dist/ssr";
 import DeleteComment from "./DeleteComment";
-import { authServerSession } from "@/lib/api/auth";
+import UpVoteComment from "./UpVoteComment";
+import {
+  downVoteCommentByCommentId,
+  neutralVoteCommentByCommentId,
+  upVoteCommentByCommentId,
+} from "@/lib/api/services";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import DownVoteComment from "./DownVoteComment";
 
 interface ItemCommentProps {
-  comment: ResponseCommentType;
+  comment: ResponseCommentApiType;
   index: number;
   commentLength: number;
+  upVoteBy: boolean;
+  downVoteBy: boolean;
 }
 
-const ItemComment: FunctionComponent<ItemCommentProps> = async ({
+const ItemComment: FunctionComponent<ItemCommentProps> = ({
   comment,
   index,
   commentLength,
+  upVoteBy,
+  downVoteBy,
 }) => {
-  const session = await authServerSession();
+  const { data: session } = useSession();
+  const [isUpVote, setIsUpVote] = useState<boolean>(upVoteBy);
+  const [isDownVote, setIsDownVote] = useState<boolean>(downVoteBy);
+  const router = useRouter();
+
+  const upVoteHandler = async () => {
+    if (isUpVote && !isDownVote) {
+      try {
+        await neutralVoteCommentByCommentId(comment.id);
+        setIsUpVote(false);
+        toast.success("Success neutral-vote comment");
+      } catch (error: any) {
+        toast.error(error.message);
+        setIsUpVote(true);
+      } finally {
+        router.refresh();
+      }
+    } else {
+      try {
+        await upVoteCommentByCommentId(comment.id);
+        setIsUpVote(true);
+        setIsDownVote(false);
+        toast.success("Success up-vote comment");
+      } catch (error: any) {
+        toast.error(error.message);
+        setIsUpVote(false);
+      } finally {
+        router.refresh();
+      }
+    }
+  };
+
+  const downVoteHandler = async () => {
+    if (isDownVote && !isUpVote) {
+      try {
+        await neutralVoteCommentByCommentId(comment.id);
+        setIsDownVote(false);
+        toast.success("Success neutral-vote comment");
+      } catch (error: any) {
+        toast.error(error.message);
+        setIsDownVote(true);
+      } finally {
+        router.refresh();
+      }
+    } else {
+      try {
+        await downVoteCommentByCommentId(comment.id);
+        setIsDownVote(true);
+        setIsUpVote(false);
+        toast.success("Success down-vote comment");
+      } catch (error: any) {
+        toast.error(error.message);
+        setIsDownVote(false);
+      } finally {
+        router.refresh();
+      }
+    }
+  };
+
   return (
     <>
       <div className="w-full flex items-center gap-x-4 mb-5 group/comment">
@@ -45,13 +118,14 @@ const ItemComment: FunctionComponent<ItemCommentProps> = async ({
           <p className="mb-2 text-sm">{comment.comment}</p>
           <div className="text-slate-400 flex items-center gap-x-3 text-xs">
             <button className="font-semibold">Reply</button>
-            <span className="font-semibold">12 Likes</span>
-            <button className="">
-              <ThumbsUp size={16} />
-            </button>
-            <button className="">
-              <ThumbsDown size={16} />
-            </button>
+            <span className="font-semibold">
+              {comment.upVoteBy.length} Likes
+            </span>
+            <UpVoteComment isUpVote={isUpVote} upVoteHandler={upVoteHandler} />
+            <DownVoteComment
+              isDownVote={isDownVote}
+              downVoteHandler={downVoteHandler}
+            />
           </div>
         </div>
       </div>

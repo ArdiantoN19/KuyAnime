@@ -3,7 +3,6 @@
 import { getComments } from "@/lib/api/services";
 import { ResponseCommentType } from "@/types/comment";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import ItemComment from "../Comment/ItemComment";
 import DataNotFound from "../DataNotFound";
 import Link from "next/link";
 import Image from "next/image";

@@ -11,38 +11,52 @@ datasource db {
 }
 
 model User {
-  id          Int @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   name        String
-  email       String @unique
+  email       String            @unique
   password    String?
   image       String?
   type        String?
   collections Collection[]
   comments    Comment[]
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  comment_likes CommentLike[]
+  created_at  DateTime          @default(now())
+  updated_at  DateTime          @updatedAt
 }
 
 model Collection {
-  id           Int @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   anime_mal_id Int
   anime_image  String
   anime_title  String
-  owner        User @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner        User       @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id     Int
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
 
   @@unique([anime_mal_id, owner_id])
 }
 
-
 model Comment {
-  id            Int @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   anime_mal_id  Int
   comment       String
-  owner         User @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner         User            @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id      Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  comment_likes CommentLike[] 
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+}
+
+model CommentLike {
+  id          Int       @id @default(autoincrement())
+  comment     Comment   @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  comment_id  Int
+  owner       User      @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner_id    Int
+  vote        Boolean?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@unique([comment_id, owner_id])
 }

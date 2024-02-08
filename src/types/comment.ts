@@ -13,3 +13,8 @@ export type ResponseCommentType = PayloadCommentType & {
     image: string;
   };
 };
+
+export type ResponseCommentApiType = ResponseCommentType & {
+  upVoteBy: number[];
+  downVoteBy: number[];
+};

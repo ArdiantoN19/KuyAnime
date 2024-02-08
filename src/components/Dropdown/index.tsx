@@ -14,9 +14,9 @@ const Dropdown: FunctionComponent<DropdownProps> = ({ label, children }) => {
   };
   return (
     <div className="min-w-10 relative">
-      <p className="cursor-pointer block" onClick={showHideMenuHandler}>
+      <div className="cursor-pointer block" onClick={showHideMenuHandler}>
         {label}
-      </p>
+      </div>
       {isShow && (
         <div
           className={`absolute z-10 block transition-all right-3 top-12 rounded shadow bg-white py-3 w-auto`}

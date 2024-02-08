@@ -14,7 +14,6 @@ interface CommentProps {
 const Comment: FunctionComponent<CommentProps> = async ({ anime_mal_id }) => {
   const session = await authServerSession();
   const comments = await getCommentsByAnimeMalId(anime_mal_id);
-
   return (
     <div className="container mb-16">
       <div className="w-full mb-5">

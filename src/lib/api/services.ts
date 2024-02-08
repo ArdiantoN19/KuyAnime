@@ -223,3 +223,45 @@ export const deleteCommentByCommentId = async (commentId: number) => {
   const responseJson = await response.json();
   return responseJson.data;
 };
+
+export const upVoteCommentByCommentId = async (commentId: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment/${commentId}/up-vote`,
+    {
+      method: "POST",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Something wrong when up-vote comment");
+  }
+  const responseJson = await response.json();
+  return responseJson.data;
+};
+
+export const neutralVoteCommentByCommentId = async (commentId: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment/${commentId}/neutral-vote`,
+    {
+      method: "POST",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Something wrong when neutral-vote comment");
+  }
+  const responseJson = await response.json();
+  return responseJson.data;
+};
+
+export const downVoteCommentByCommentId = async (commentId: number) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/comment/${commentId}/neutral-vote`,
+    {
+      method: "POST",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Something wrong when neutral-vote comment");
+  }
+  const responseJson = await response.json();
+  return responseJson.data;
+};
